@@ -1,0 +1,77 @@
+<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                <div class="d-flex justify-content-center py-4">
+                    <a routerLink="/" class="logo d-flex align-items-center w-auto">
+                        <!-- <img src="assets/img/logo.png" alt="" /> -->
+                        <span class="d-none d-lg-block">InfServe</span>
+                    </a>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="pt-4 pb-2">
+                            <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                            <!-- <p class="text-center small">Enter your mobile & password to login</p> -->
+                        </div>
+
+                        <form class="row" #loginForm="ngForm" (ngSubmit)="submitLoginForm(loginForm)">
+                            <!-- {{loginForm.value | json}} -->
+                            <input type="hidden" [(ngModel)]="loginFormModel.device_type" name="device_type">
+                            <input type="hidden" [(ngModel)]="loginFormModel.device_token" name="device_token">
+                            <div class="form-group col-12">
+                                <label for="businessId" class="form-label">Business Id</label>
+                                <div class="input-group">
+                                    <input type="text" #business_id="ngModel" [(ngModel)]="loginFormModel.business_id" name="business_id" class="form-control" (keypress)="isNumberKey($event)" min="1" maxlength="8" id="businessId" required placeholder="Business Id"/>
+                                </div>
+                                <span *ngIf="business_id.invalid && (business_id.dirty || business_id.touched)" class="text-danger">
+                                    <span *ngIf="business_id.errors?.['required']">Please enter your business id.</span>
+                                </span>
+                                <span *ngIf="backendError?.business_id" class="text-danger">{{backendError?.business_id}}</span>
+                            </div>
+
+                            <div class="form-group col-12">
+                                <label for="yourUsername" class="form-label">Mobile / Email</label>
+                                <div class="input-group">
+                                    <input type="text" #email_mobile="ngModel" [(ngModel)]="loginFormModel.email_mobile" name="email_mobile" class="form-control" id="yourUsername" pattern="^([0-9]{10})|([A-Za-z0-9._%\+\-]+@[a-z0-9.\-]+\.[a-z]{2,3})$" required placeholder="Mobile / Email" />
+                                </div>
+                                <span *ngIf="email_mobile.invalid && (email_mobile.dirty || email_mobile.touched)" class="text-danger">
+                                    <span *ngIf="email_mobile.errors?.['required']">Please enter your Email / Mobile.</span>
+                                    <span *ngIf="email_mobile.errors?.['pattern']">Invalid Email or Mobile</span>
+                                </span>
+                                <span *ngIf="backendError?.email_mobile" class="text-danger">{{backendError?.email_mobile}}</span>
+                            </div>
+
+                            <div class="form-group col-12">
+                                <label for="yourPassword" class="form-label">Password</label>
+                                <input type="password" #password="ngModel" [(ngModel)]="loginFormModel.password" name="password" class="form-control" id="yourPassword" required placeholder="Password"/>
+                                <span *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+                                    <span *ngIf="password.errors?.['required']">Please provide password</span>
+                                </span>
+                                <span *ngIf="backendError?.password" class="text-danger">{{backendError?.password}}</span>
+                            </div>
+                            
+                            <div class="form-group col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" [(ngModel)]="loginFormModel.remember" type="checkbox" name="remember" id="rememberMe" />
+                                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-12">
+                                <button class="btn btn-primary w-100" [disabled]="!loginForm.valid" type="submit">Login</button>
+                            </div>
+                            <!-- <div class="col-12">
+                                <p class="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>
+                            </div> -->
+                        </form>
+                    </div>
+                </div>
+
+                <div class="credits">
+                    Designed by <a routerLink="/">InfServe</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
