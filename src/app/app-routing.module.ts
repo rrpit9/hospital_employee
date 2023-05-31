@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: '', component:LoginComponent, title: "Login", pathMatch:'full'},
   {path: 'login', component:LoginComponent, title: "Login", pathMatch:'full'},
   {path: 'dashboard', component:DashboardComponent, title: "Dashboard", pathMatch:'full', canActivate:[AuthGuardService]},
-  {path: 'my-profile', component:ProfileComponent, title: "Profile", pathMatch:'full', canActivate:[AuthGuardService]},
+  {path: 'my-profile', component:ProfileComponent, title: "My Profile", pathMatch:'full', canActivate:[AuthGuardService]},
   
   /** Wild Card Route, this should be in the last route */
   {path: '**', component: PageNotFoundComponent, title: 'Page Not Found'}

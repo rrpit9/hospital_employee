@@ -14,10 +14,11 @@ import { MasterComponent } from './layout/master/master.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { ProfileComponent } from './auth/profile/profile.component';
 import { AuthGuardService } from 'src/services/auth-guard.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, DashboardComponent, SidebarComponent, HeaderComponent, PageNotFoundComponent, MasterComponent, FooterComponent, ProfileComponent],
-  imports: [BrowserModule,AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [BrowserModule,AppRoutingModule, HttpClientModule, FormsModule, NgbModule],
   providers: [AuthGuardService,ApiService],
   bootstrap: [AppComponent]
 })
