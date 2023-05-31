@@ -25,14 +25,18 @@ export class ApiService {
     }
 
     authenticateUser(loginData:any){
+        localStorage.clear();
         localStorage.setItem('userInfo', JSON.stringify(loginData?.data));
         localStorage.setItem('accessToken', loginData?.data?.access_token);
         this._router.navigateByUrl('/dashboard');
     }
 
-    v1logoutUser(){
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('userInfo');
+    v1logoutUser(session = 'one'){
+        localStorage.clear();
+        this._router.navigateByUrl('/');
+        if(session == 'all'){
+            return this._http.post<any>(_baseUrl + 'v1/logout_from_all',{headers: this.header});
+        }
         return this._http.post<any>(_baseUrl + 'v1/logout',{headers: this.header});
     }
 }
