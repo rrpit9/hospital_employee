@@ -8,12 +8,23 @@ import { ApiService } from 'src/services/api.service';
 })
 export class HeaderComponent implements OnInit{
 
-  public userProfile:object = {};
+  public authUser:any = {};
 
   constructor(private _apiService:ApiService){}
 
   ngOnInit(): void {
-    
+    this.getAuthUser();
+  }
+
+  getAuthUser(){
+    this._apiService.v1GetAuthUserProfile().subscribe(
+      res => {
+        if(res.success == true){
+          this.authUser = res.data;
+          console.log('calling AUTH API',this.authUser);
+        }
+      },err => {}
+    );
   }
 
   logoutFromSession(){

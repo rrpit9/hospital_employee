@@ -31,6 +31,14 @@ export class ApiService {
         this._router.navigateByUrl('/dashboard');
     }
 
+    v1GetAuthUserProfile(){
+        return this._http.get<any>(_baseUrl + 'v1/profile',{headers: this.header});
+    }
+
+    v1GetNotification(){
+        return this._http.get<any>(_baseUrl + 'v1/notification',{headers: this.header});
+    }
+
     v1logoutUser(session = 'one'){
         localStorage.clear();
         this._router.navigateByUrl('/');
