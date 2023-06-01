@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit{
     device_type    : 'android',
     device_token   : 'android-web-angular',
     business_id    : '1',
-    email_mobile   : 'addison12@example.net',
+    email_mobile   : 'domenica95@example.org',
     password       : 'xbkJyuTgeFr@3',
     remember       : false
   }

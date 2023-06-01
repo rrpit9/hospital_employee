@@ -4,3 +4,11 @@ export function isNumberKey(event: any) : any {
     }
     return false;
 }
+
+export function gender() : any {
+    return ['Male','Female','Others'];
+}
+
+export function marital() : any {
+    return ['Married','UnMarried','Divorced'];
+}

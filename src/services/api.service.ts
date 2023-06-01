@@ -35,6 +35,14 @@ export class ApiService {
         return this._http.get<any>(_baseUrl + 'v1/profile',{headers: this.header});
     }
 
+    v1UpdateAuthPassword(formdata: any){
+        return this._http.post<any>(_baseUrl + 'v1/change-password',formdata,{headers: this.header});
+    }
+
+    v1UpdateAuthProfile(formdata: any){
+        return this._http.post<any>(_baseUrl + 'v1/update-profile',formdata,{headers: this.header});
+    }
+
     v1GetNotification(){
         return this._http.get<any>(_baseUrl + 'v1/notification',{headers: this.header});
     }
