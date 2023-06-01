@@ -26,13 +26,26 @@ export class ApiService {
 
     authenticateUser(loginData:any){
         localStorage.clear();
-        localStorage.setItem('userInfo', JSON.stringify(loginData?.data));
+        this.saveSessionUser(loginData?.data);
         localStorage.setItem('accessToken', loginData?.data?.access_token);
         this._router.navigateByUrl('/dashboard');
     }
 
+    saveSessionUser(userInfo:any){
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    }
+
+    getSessionUser(){
+        return JSON.parse(localStorage.getItem('userInfo') ?? '{}');
+    }
+    
     v1GetAuthUserProfile(){
+        console.log('Calling Get User API from Service');
         return this._http.get<any>(_baseUrl + 'v1/profile',{headers: this.header});
+    }
+
+    v1UpdateAuthPin(formdata: any){
+        return this._http.post<any>(_baseUrl + 'v1/change-pin',formdata,{headers: this.header});
     }
 
     v1UpdateAuthPassword(formdata: any){

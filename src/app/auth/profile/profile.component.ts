@@ -21,7 +21,8 @@ export class ProfileComponent {
   public profileTabs = {
     overview       : false,
     edit           : false,
-    changepassword : false
+    changepassword : false,
+    changepin      : false
   };
 
   public profileTabType: string = 'overview';
@@ -40,7 +41,8 @@ export class ProfileComponent {
       res => {
         if(res.success == true){
           this.authUser = res.data;
-          console.log('calling AUTH API For Profile',this.authUser);
+          /** saving the User Info in Local Session */
+          this._apiService.saveSessionUser(this.authUser);
         }
       },err => {}
     );
@@ -51,16 +53,27 @@ export class ProfileComponent {
       case 'overview': this.profileTabs.overview = true; break;
       case 'edit': this.profileTabs.edit = true; break;
       case 'change-password': this.profileTabs.changepassword = true; break;
+      case 'change-pin': this.profileTabs.changepin = true; break;
     }
-    console.log(this.profileTabs);
   }
 
   submitUpdateProfileForm(formData: NgForm){
     if(formData.valid){
-      console.log(formData.value);
       this._apiService.v1UpdateAuthProfile(formData.value).subscribe(
         res => {
+          this._apiService.saveSessionUser(res.data);
+        },err => {
+          this.backendError = err?.error?.errors;
+        }
+      );
+    }
+  }
 
+  submitChangePinForm(formData: NgForm){
+    if(formData.valid){
+      this._apiService.v1UpdateAuthPin(formData.value).subscribe(
+        res => {
+          formData.reset();
         },err => {
           this.backendError = err?.error?.errors;
         }

@@ -17,14 +17,7 @@ export class HeaderComponent implements OnInit{
   }
 
   getAuthUser(){
-    this._apiService.v1GetAuthUserProfile().subscribe(
-      res => {
-        if(res.success == true){
-          this.authUser = res.data;
-          console.log('calling AUTH API',this.authUser);
-        }
-      },err => {}
-    );
+    this.authUser = this._apiService.getSessionUser();
   }
 
   logoutFromSession(){

@@ -43,6 +43,10 @@
                                 <button class="nav-link" routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
                             </li>
 
+                            <li class="nav-item" routerLink="/my-profile/change-pin">
+                                <button class="nav-link" routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#profile-change-pin">Change Login PIN</button>
+                            </li>
+
                             <li class="nav-item" routerLink="/my-profile/change-password">
                                 <button class="nav-link" routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
                             </li>
@@ -62,7 +66,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                                    <div class="col-lg-3 col-md-4 label">Mobile</div>
                                     <div class="col-lg-9 col-md-8">{{authUser.mobile ?? '-'}}</div>
                                 </div>
 
@@ -83,7 +87,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Date Of Birth</div>
-                                    <div class="col-lg-9 col-md-8">{{authUser.dob ?? '-'}}</div>
+                                    <div class="col-lg-9 col-md-8">{{authUser.dob ? (authUser.dob | date:'dd-MM-YYYY') : '-'}}</div>
                                 </div>
 
                                 <div class="row">
@@ -93,7 +97,7 @@
 
                                 <div *ngIf="authUser.marital == 'Married'" class="row">
                                     <div class="col-lg-3 col-md-4 label">Anniversary</div>
-                                    <div class="col-lg-9 col-md-8">{{authUser.aniversary ?? '-'}}</div>
+                                    <div class="col-lg-9 col-md-8">{{authUser.aniversary ? (authUser.aniversary | date:'dd-MM-YYYY') : '-'}}</div>
                                 </div>
 
                                 <div class="row">
@@ -110,7 +114,7 @@
                             <div [ngClass]="{'tab-pane show active fade profile-edit pt-3':true, 'show active': profileTabs.edit}" id="profile-edit">
                                 <!-- Profile Edit Form -->
                                 <form #updateProfileForm="ngForm" (ngSubmit)="submitUpdateProfileForm(updateProfileForm)">
-                                    {{updateProfileForm.value | json}}
+                                    <!-- {{updateProfileForm.value | json}} -->
                                     <div class="row mb-3">
                                         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                         <div class="col-md-8 col-lg-8">
@@ -125,10 +129,10 @@
                                         <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                                         <div class="col-md-8 col-lg-8">
                                             <input name="name" #name="ngModel" [ngModel]="authUser?.name" type="text" class="form-control" id="fullName" required placeholder="Full Name"/>
-                                            <span *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+                                            <span *ngIf="name.invalid && (name.dirty || name.touched)" class="text-validate">
                                                 <span *ngIf="name.errors?.['required']">Please enter your Full Name.</span>
                                             </span>
-                                            <span *ngIf="backendError?.name" class="text-danger">{{backendError?.name}}</span>
+                                            <span *ngIf="backendError?.name" class="text-validate">{{backendError?.name}}</span>
                                         </div>
                                     </div>
 
@@ -136,24 +140,24 @@
                                         <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
                                         <div class="col-md-8 col-lg-8">
                                             <textarea name="about" #about="ngModel" [ngModel]="authUser?.about" class="form-control" placeholder="About Your self" id="about" style="height: 100px;"></textarea>
-                                            <span *ngIf="about.invalid && (about.dirty || about.touched)" class="text-danger">
+                                            <span *ngIf="about.invalid && (about.dirty || about.touched)" class="text-validate">
                                                 <span *ngIf="about.errors?.['required']">Please enter about your self.</span>
                                             </span>
-                                            <span *ngIf="backendError?.about" class="text-danger">{{backendError?.about}}</span>
+                                            <span *ngIf="backendError?.about" class="text-validate">{{backendError?.about}}</span>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <label for="Mobile" class="col-md-4 col-lg-3 col-form-label">Mobile</label>
                                         <div class="col-md-8 col-lg-8">
-                                            <input name="mobile" [disabled]="true" [ngModel]="authUser?.mobile" type="text" class="form-control" maxlength="10" id="Mobile" placeholder="Mobile Number"/>
+                                            <input name="mobile" #mobile="ngModel" [ngModel]="authUser?.mobile" type="text" class="form-control" maxlength="10" id="Mobile" placeholder="Mobile Number"/>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <label for="Email" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                                         <div class="col-md-8 col-lg-8">
-                                            <input name="email" [disabled]="true" [ngModel]="authUser?.email" type="text" class="form-control" id="Email" required placeholder="Email Address"/>
+                                            <input name="email"  #email="ngModel" [ngModel]="authUser?.email" type="text" class="form-control" id="Email" required placeholder="Email Address"/>
                                         </div>
                                     </div>
 
@@ -164,10 +168,10 @@
                                                 <option value="">--Select Gender--</option>
                                                 <option *ngFor="let gen of defaultGender;" value="{{gen}}">{{gen}}</option>
                                             </select>
-                                            <span *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger">
+                                            <span *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-validate">
                                                 <span *ngIf="gender.errors?.['required']">Please specify your gender</span>
                                             </span>
-                                            <span *ngIf="backendError?.gender" class="text-danger">{{backendError?.gender}}</span>
+                                            <span *ngIf="backendError?.gender" class="text-validate">{{backendError?.gender}}</span>
                                         </div>
                                     </div>
 
@@ -175,10 +179,10 @@
                                         <label for="Job" class="col-md-4 col-lg-3 col-form-label">Date of Birth</label>
                                         <div class="col-md-8 col-lg-8">
                                             <input name="dob" #dob="ngModel" [ngModel]="authUser?.dob" type="date" required class="form-control" id="dob" />
-                                            <span *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
+                                            <span *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-validate">
                                                 <span *ngIf="dob.errors?.['required']">Please provide your date of birth</span>
                                             </span>
-                                            <span *ngIf="backendError?.dob" class="text-danger">{{backendError?.dob}}</span>
+                                            <span *ngIf="backendError?.dob" class="text-validate">{{backendError?.dob}}</span>
                                         </div>
                                     </div>
 
@@ -189,10 +193,10 @@
                                                 <option value="">--Select Marital--</option>
                                                 <option *ngFor="let mat of defaultMarital;" value="{{mat}}">{{mat}}</option>
                                             </select>
-                                            <span *ngIf="marital.invalid && (marital.dirty || marital.touched)" class="text-danger">
+                                            <span *ngIf="marital.invalid && (marital.dirty || marital.touched)" class="text-validate">
                                                 <span *ngIf="marital.errors?.['required']">Please provide your marital status</span>
                                             </span>
-                                            <span *ngIf="backendError?.marital" class="text-danger">{{backendError?.marital}}</span>
+                                            <span *ngIf="backendError?.marital" class="text-validate">{{backendError?.marital}}</span>
                                         </div>
                                     </div>
 
@@ -200,10 +204,10 @@
                                         <label for="Job" class="col-md-4 col-lg-3 col-form-label">Anniversary</label>
                                         <div class="col-md-8 col-lg-8">
                                             <input name="aniversary" #aniversary="ngModel" [ngModel]="authUser?.aniversary" required type="date" class="form-control" id="aniversary" />
-                                            <span *ngIf="aniversary.invalid && (aniversary.dirty || aniversary.touched)" class="text-danger">
+                                            <span *ngIf="aniversary.invalid && (aniversary.dirty || aniversary.touched)" class="text-validate">
                                                 <span *ngIf="aniversary.errors?.['required']">Please provide your anniversary date</span>
                                             </span>
-                                            <span *ngIf="backendError?.aniversary" class="text-danger">{{backendError?.aniversary}}</span>
+                                            <span *ngIf="backendError?.aniversary" class="text-validate">{{backendError?.aniversary}}</span>
                                         </div>
                                     </div>
 
@@ -214,6 +218,49 @@
                                 <!-- End Profile Edit Form -->
                             </div>
 
+                            <div [ngClass]="{'tab-pane fade pt-3': true, 'show active': profileTabs.changepin}" id="profile-change-pin">
+                                <!-- Change Password Form -->
+                                <form #pinChangeForm="ngForm" (ngSubmit)="submitChangePinForm(pinChangeForm)">
+                                    <!-- {{pinChangeForm.value | json}} -->
+                                    <div class="row mb-3">
+                                        <label for="currentPin" class="col-md-4 col-lg-3 col-form-label">Current Pin</label>
+                                        <div class="col-md-8 col-lg-8">
+                                            <input name="current_pin" #current_pin="ngModel" ngModel type="password" class="form-control" id="currentPin" placeholder="Current Pin"/>
+                                            <span *ngIf="current_pin.invalid && (current_pin.dirty || current_pin.touched)" class="text-validate">
+                                                <span *ngIf="current_pin.errors?.['required']">Please enter your current pin.</span>
+                                            </span>
+                                            <span *ngIf="backendError?.current_pin" class="text-validate">{{backendError?.current_pin}}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-3">
+                                        <label for="newPin" class="col-md-4 col-lg-3 col-form-label">New Pin</label>
+                                        <div class="col-md-8 col-lg-8">
+                                            <input name="new_pin" #new_pin="ngModel" ngModel required type="password" class="form-control" id="newPin" placeholder="New Pin"/>
+                                            <span *ngIf="new_pin.invalid && (new_pin.dirty || new_pin.touched)" class="text-validate">
+                                                <span *ngIf="new_pin.errors?.['required']">Please enter your new pin.</span>
+                                            </span>
+                                            <span *ngIf="backendError?.new_pin" class="text-validate">{{backendError?.new_pin}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="reNewPin" class="col-md-4 col-lg-3 col-form-label">Re-enter New Pin</label>
+                                        <div class="col-md-8 col-lg-8">
+                                            <input name="new_pin_confirmation" #new_pin_confirmation="ngModel" ngModel required type="password" class="form-control" id="reNewPin" placeholder="Re-enter New Pin"/>
+                                            <span *ngIf="new_pin_confirmation.invalid && (new_pin_confirmation.dirty || new_pin_confirmation.touched)" class="text-validate">
+                                                <span *ngIf="new_pin_confirmation.errors?.['required']">Please enter confirmation pin.</span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="">
+                                        <button [disabled]="!pinChangeForm.valid" type="submit" class="btn btn-primary">Change Pin</button>
+                                    </div>
+                                </form>
+                                <!-- End Change Password Form -->
+                            </div>
+
                             <div [ngClass]="{'tab-pane fade pt-3': true, 'show active': profileTabs.changepassword}" id="profile-change-password">
                                 <!-- Change Password Form -->
                                 <form #passwordChangeForm="ngForm" (ngSubmit)="submitChangePasswordForm(passwordChangeForm)">
@@ -222,10 +269,10 @@
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                                         <div class="col-md-8 col-lg-8">
                                             <input name="current_password" #current_password="ngModel" ngModel type="password" required class="form-control" id="currentPassword" placeholder="Current Password"/>
-                                            <span *ngIf="current_password.invalid && (current_password.dirty || current_password.touched)" class="text-danger">
+                                            <span *ngIf="current_password.invalid && (current_password.dirty || current_password.touched)" class="text-validate">
                                                 <span *ngIf="current_password.errors?.['required']">Please enter your current password.</span>
                                             </span>
-                                            <span *ngIf="backendError?.current_password" class="text-danger">{{backendError?.current_password}}</span>
+                                            <span *ngIf="backendError?.current_password" class="text-validate">{{backendError?.current_password}}</span>
                                         </div>
                                     </div>
                                     
@@ -233,10 +280,10 @@
                                         <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                                         <div class="col-md-8 col-lg-8">
                                             <input name="new_password" #new_password="ngModel" ngModel required type="password" class="form-control" id="newPassword" placeholder="New Password"/>
-                                            <span *ngIf="new_password.invalid && (new_password.dirty || new_password.touched)" class="text-danger">
+                                            <span *ngIf="new_password.invalid && (new_password.dirty || new_password.touched)" class="text-validate">
                                                 <span *ngIf="new_password.errors?.['required']">Please enter your new password.</span>
                                             </span>
-                                            <span *ngIf="backendError?.new_password" class="text-danger">{{backendError?.new_password}}</span>
+                                            <span *ngIf="backendError?.new_password" class="text-validate">{{backendError?.new_password}}</span>
                                         </div>
                                     </div>
 
@@ -244,13 +291,13 @@
                                         <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                                         <div class="col-md-8 col-lg-8">
                                             <input name="new_password_confirmation" #new_password_confirmation="ngModel" ngModel required type="password" class="form-control" id="renewPassword" placeholder="Re-enter New Password"/>
-                                            <span *ngIf="new_password_confirmation.invalid && (new_password_confirmation.dirty || new_password_confirmation.touched)" class="text-danger">
+                                            <span *ngIf="new_password_confirmation.invalid && (new_password_confirmation.dirty || new_password_confirmation.touched)" class="text-validate">
                                                 <span *ngIf="new_password_confirmation.errors?.['required']">Please enter confirmation password.</span>
                                             </span>
                                         </div>
                                     </div>
 
-                                    <div class="">
+                                    <div>
                                         <button [disabled]="!passwordChangeForm.valid" type="submit" class="btn btn-primary">Change Password</button>
                                     </div>
                                 </form>
